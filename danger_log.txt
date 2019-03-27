@@ -1,0 +1,17 @@
+01/28 The content of password should be invisible.
+01/28 Alert if the account is invalid.
+01/28 Alert if the password is wrong.
+01/28 The username be at least 6 characters long.
+01/28 The password be at least 6 characters long.
+01/28 The input email should in the email format.
+01/28 The phone number should in the phone format.
+01/29 The user can access the ride data without login
+02/01 The passenger number cannot exceed the vehicle level (capacity).
+02/02 The driver can be in the same car as customers.
+02/02 Customers can search share orders even if it was created by his own.
+02/03 Customers can find different vehicle level in searching sharing orders.
+02/04 The user can directly enter the page by typing in url without login. We avoid it with session.
+02/04 The password is not encrypted when transmit to back-end.
+02/04 The password stored in the database is not encrypted.
+02/04 Possible SQL injection attack.
+02/05 If we are out of memory the program can not provide service to client anymore.

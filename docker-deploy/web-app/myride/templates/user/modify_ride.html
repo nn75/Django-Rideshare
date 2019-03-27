@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>Title</title>
+</head>
+
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+<div class="nav">
+    <div class="table_title">Modify Order</div>
+    <div class="san">
+        <br>
+        <uL>
+            <li align="center"><strong>Order ID:</strong></li>
+            <li style=" padding-left:10px;" id="id_ID">Hello World!</li>
+
+            <li align="center"><strong>Start:</strong></li>
+            <li style=" padding-left:10px;"><input type="text" id="id_start" name="start" placeholder="start" autofocus
+                                                   required/></li>
+
+            <li align="center"><strong>Destination: </strong></li>
+            <li style=" padding-left:10px;"><input type="text" id="id_destination" name="destination"
+                                                         placeholder="destination" autofocus required/></li>
+            <li align="center"><strong>Time:</strong></li>
+            <li style=" padding-left:10px;"><input type="datetime-local" id="id_time" value="2019-01-29T12:59:00"
+                                                         name="time" placeholder="time" required/></li>
+
+            <li align="center"><strong>Passenger Number:</strong></li>
+            <li style=" padding-left:10px;"><input type="text" id="id_passenger_num" name="passenger_num" placeholder="passenger_num" required/></li>
+
+            <li align="center"><strong>Vehicle Level:</strong></li>
+            <li style=" padding-left:10px;"><select id="id_level" name="level" placeholder="level" required/>
+                <option value="S" selected>1-3 people</option>
+                <option value="M">1-5 people</option>
+                <option value="L">1-7 people</option>
+                </select>
+            </li>
+
+            <li align="center"><strong>Share:</strong></li>
+            <li style=" padding-left:10px;" id="id_share">Hello World!</li>
+
+            <li align="center"><strong>Status:</strong></li>
+            <li style=" padding-left:10px;" id="id_status">Hello World!</li>
+
+            <li align="center"><strong>Special Request:</strong></li>
+            <li style=" padding-left:10px;"><input type="text" id="id_special_request" name="special_request" placeholder="special_request" /></li>
+
+
+        </uL>
+        <input type="button" name="btn" value="Return" onclick="toReturn()" class="confirm_return">
+        <input type="button" name="btn" value="Confirm" onclick="to_confirm_modify()" class="confirm">
+        <div class="clearit"></div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    var s8 = localStorage["s8"];
+    document.getElementById("id_ID").innerHTML = s8;
+    var s1 = localStorage["s1"];
+    document.getElementById("id_start").value = s1;
+    var s2 = localStorage["s2"];
+    document.getElementById("id_destination").value = s2;
+    var s3 = localStorage["s3"];
+    document.getElementById("id_time").innerHTML = s3;
+    var s4 = localStorage["s4"];
+    document.getElementById("id_passenger_num").value = s4;
+    var s5 = localStorage["s5"];
+    document.getElementById("id_level").value = s5;
+    var s6 = localStorage["s6"];
+    document.getElementById("id_share").innerHTML = s6;
+    var s7 = localStorage["s7"];
+    document.getElementById("id_status").innerHTML = s7;
+    var s9 = localStorage["s9"];
+    document.getElementById("id_special_request").value = s9;
+    function to_confirm_modify() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", "{% url 'modify_ride' user.id %}");
+        var params = {
+            "ride_pk": s8,
+            "start": document.getElementById("id_start").value,
+            "destination": document.getElementById("id_destination").value,
+            "time": document.getElementById("id_time").value,
+            "level": document.getElementById("id_level").value,
+            "passenger_num": document.getElementById("id_passenger_num").value,
+            "is_share":s6,
+            "special_request":document.getElementById("id_special_request").value,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+        document.body.appendChild(form);
+        form.submit()
+    }
+
+    function toReturn() {
+        window.history.back();
+    }
+</script>
+</html>

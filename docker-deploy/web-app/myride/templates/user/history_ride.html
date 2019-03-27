@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>Title</title>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style type="text/css">
+    table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #bf751a;
+    }
+
+    table td, table th {
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    table tr:hover {
+        background-color: #ddd;
+    }
+
+    table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #e4840f;
+        color: white;
+    }
+</style>
+<script type="text/javascript">
+    function return_back() {
+        window.location.href = "{% url 'customer_profile' user.id %}";
+    }
+    function shareDetail(start, passenger_num) {
+        info = "";
+        info += "\nStart Direction: From ";
+        info += start;
+        info += "\nPassenger Number List: ";
+        info += passenger_num;
+        window.alert(info);
+    }
+    function driver_info(name, phone, license, vehicle_level, service) {
+            info = "Name: ";
+            info += String(name);
+            info += "\nPhone: ";
+            info += String(phone);
+            info += "\nLicense: ";
+            info += String(license);
+            info += "\nVehicle Level: ";
+            info += String(vehicle_level);
+            info += "\nService: ";
+            info += String(service);
+            window.alert(info);
+        }
+</script>
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+<div class="table_title">History Orders</div>
+<div class="nav">
+<table id="tb_tj" class="table">
+        <thead>
+        <tr>
+            <th>Ride ID</th>
+            <th>Start</th>
+            <th>Destination</th>
+            <th>Arrival Time</th>
+            <th>Passenger Number</th>
+            <th>Vehicle_Level</th>
+            <th>Share or Not</th>
+            <th>Special Request</th>
+            <th>Driver</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in historylist %}
+            <tr>
+                <td>
+                    <div name="a8" class="wrap">{{ order.ride_pk }}</div>
+                </td>
+                <td>
+                    <div name="a1" class="wrap">{{ order.start }}</div>
+                </td>
+                <td>
+                    <div name="a2" class="wrap">{{ order.destination }}</div>
+                </td>
+                <td>
+                    <div name="a3" class="wrap">{{ order.arrival_time }}</div>
+                </td>
+                <td>
+                    <div name="a4" class="wrap">{{ order.passenger_num }}</div>
+                </td>
+                <td>
+                    <div name="a5" class="wrap">{{ order.vehicle_level }}</div>
+                </td>
+                <td>
+                    <div name="a6" class="wrap"><a onclick="shareDetail('{{ order.combine_start }}', '{{ order.combine_passenger }}')"
+                                                   href='#'>{{ order.is_shared }}</a></div>
+                </td>
+                <td>
+                    <div name="a7" class="wrap">{{ order.special_request}}</div>
+                </td>
+                            <td>
+                    <div name="a8" class="wrap"><a
+                            onclick="driver_info('{{ order.driver.user.customer.name }}', '{{ order.driver.user.customer.phone }}', '{{ order.driver.license }}', '{{ order.driver.vehicle_level }}', '{{ order.driver.special_service }}')"
+                            href='#'>{{ order.driver.user.customer.name }}</a></div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><input type="button" name="btn" value="Return" onclick="return_back()" class="table_return"></p>
+</div>
+</body>
+</html>

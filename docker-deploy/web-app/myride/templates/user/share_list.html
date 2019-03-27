@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>Title</title>
+</head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style type="text/css">
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #bf751a;
+        }
+
+        table td, table th {
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #ddd;
+        }
+
+        table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: #e4840f;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+<div class="table_title">Sharing Pool</div>
+
+<div class="nav">
+    <div style="text-align:center;margin-top: 27px">
+        <span><strong>Start:</strong></span><span id="id_start" style="margin-right:24px;">{{ shareinfo.start }}</span>
+        <span><strong>Destination:</strong></span><span id="id_destination"
+                                                        style="margin-right:24px;">{{ shareinfo.destination }}</span>
+        <span><strong>Time:</strong></span><span id="id_mytime"
+                                                 style="margin-right:24px;">{{ shareinfo.raw_time }}</span>
+        <span><strong>Passenger Number:</strong></span><span id="id_pg_num"
+                                                             style="margin-right:24px;">{{ shareinfo.passenger_num }}</span>
+        <span><strong>Level:</strong></span><span id="id_level"
+                                                  style="margin-right:24px;">{{ shareinfo.level_num }}</span>
+        <span><strong>Share:</strong></span><span id="id_share" style="margin-right:24px;">{{ shareinfo.share }}</span>
+        <span><strong>Status:</strong></span><span id="id_status"
+                                                   style="margin-right:24px;">{{ shareinfo.status }}</span>
+         <span><strong>Special Request:</strong></span><span id="id_special_request"
+                                                   style="margin-right:24px;">{{ shareinfo.special_request }}</span>
+    </div>
+    <table id="tb_tj" class="table" style="margin-left:0px;">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Ride ID</th>
+            <th>Destination</th>
+            <th>Arrival Time</th>
+            <th>Passenger Number</th>
+            <th>Vehicle_Level</th>
+            <th>Share or Not</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in sharelist %}
+            <tr>
+                <td><input id="select" type="checkbox" name="ckb_select" onclick=choose(this) value="1" style="width:170px;"></td>
+                <td>
+                    <div name="a8" class="wrap">{{ order.id }}</div>
+                </td>
+                <td>
+                    <div name="a2" class="wrap">{{ order.destination }}</div>
+                </td>
+                <td>
+                    <div name="a3" class="wrap">{{ order.arrival_time|date:"Y-m-d H:i:s" }}</div>
+                </td>
+                <td>
+                    <div name="a4" class="wrap">{{ order.passenger_num }}</div>
+                </td>
+                <td>
+                    <div name="a5" class="wrap">{{ order.vehicle_level }}</div>
+                </td>
+                <td>
+                    <div name="a6" class="wrap"><a onclick="shareDetail('{{ order.id }}')"
+                                                   href='#'>{{ order.is_shared }}</a></div>
+                </td>
+                <td>
+                    <div name="a9" class="wrap">{{ order.special_request }}</div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type="button" name="btn" value="Return" onclick="toReturn()" class="table_return">
+    <input id="confirm_button" type="button" name="btn" value="Confirm" onclick="getTableContent()" class="table_select">
+    <input id="new_button" type="button" name="btn" value="New" onclick="new_share_ride()" class="table_cancel">
+</div>
+<script src="http://code.jquery.com/jquery-1.11.0-beta1.js"></script>
+<script type="text/javascript">
+    {% for order in sharelist %}
+        if ('{{ order.id }}'==="") {
+            modifyButton("0");
+        }
+        else {
+            modifyButton("1");
+        }
+    {% endfor %}
+    function modifyButton(num){
+        if(num==="0"){
+            document.getElementById("select").disabled=true;
+            document.getElementById("confirm_button").disabled=true;
+        }
+        else{
+            document.getElementById("select").disabled=false;
+            document.getElementById("confirm_button").disabled=false;
+        }
+    }
+    function choose(obj) {
+        var ss = document.getElementsByName("ckb_select");
+        for (var i = 0; i < ss.length; i++) {
+            ss[i].checked = false;
+        }
+        obj.checked = true;
+        document.getElementById("ckb_select").disabled=false;
+    }
+
+    function getTableContent() {
+        var Tabobj = $("#tb_tj");
+        var c1 = "{{ shareinfo.start }}";
+        localStorage.t1 = c1;
+        var c2 = "{{ shareinfo.destination }}";
+        localStorage.t2 = c2;
+        var c3 = "{{ shareinfo.raw_time }}";
+        localStorage.t3 = c3;
+        var c4 = "{{ shareinfo.passenger_num }}";
+        localStorage.t4 = c4;
+        var c5 = "{{ shareinfo.level_num }}";
+        localStorage.t5 = c5;
+        var c6 = "{{ shareinfo.share }}";
+        localStorage.t6 = c6;
+        var c7 = "{{ shareinfo.status}}";
+        localStorage.t7 = c7;
+        var Check = $("table input[type=checkbox]:checked");
+        Check.each(function () {
+            var row = $(this).parent("td").parent("tr");
+            var a8 = row.find("[name='a8']").html();
+            var a2 = row.find("[name='a2']").html();
+            var a3 = row.find("[name='a3']").html();
+            var a4 = row.find("[name='a4']").html();
+            var a5 = row.find("[name='a5']").html();
+            var a6 = row.find("[name='a6']").html();
+            var a9 = row.find("[name='a9']").html();
+            localStorage.s8 = a8;
+            localStorage.s2 = a2;
+            localStorage.s3 = a3;
+            localStorage.s4 = a4;
+            localStorage.s5 = a5;
+            localStorage.s6 = a6;
+            localStorage.s7 = "Open";
+            localStorage.t8 = "confirm";
+            localStorage.s9 = a9;
+        })
+        window.location.href = "{% url 'share_confirm' user.id %}";
+    }
+
+    function new_share_ride() {
+        var c1 = "{{ shareinfo.start }}";
+        localStorage.t1 = c1;
+        var c2 = "{{ shareinfo.destination }}";
+        localStorage.t2 = c2;
+        var c3 = "{{ shareinfo.raw_time }}";
+        localStorage.t3 = c3;
+        var c4 = "{{ shareinfo.passenger_num }}";
+        localStorage.t4 = c4;
+        var c5 = "{{ shareinfo.vehicle_level }}";
+        localStorage.t5 = c5;
+        var c6 = "{{ shareinfo.share }}";
+        localStorage.t6 = c6;
+        var c7 = "Open";
+        localStorage.t7 = c7;
+        var c8 = "new";
+        localStorage.t8 = c8;
+        var c9 = "{{ shareinfo.special_request}}";
+        localStorage.t9 = c9;
+        window.location.href = "{% url 'share_confirm' user.id %}";
+    }
+
+    function toReturn() {
+        window.history.back();
+    }
+
+    function shareDetail(ride_pk) {
+        {% for extra in extrainfo %}
+            var pk = '{{ extra.ride_pk }}';
+
+            if (ride_pk === pk) {
+                info = "";
+                info += "\nStart Direction: From ";
+                info += String('{{ extra.combine_start }}');
+                info += "\nPassenger Number List: ";
+                info += String('{{ extra.combine_passenger }}');
+                window.alert(info);
+            }
+        {% endfor %}
+    }
+</script>
+</body>
+</html>

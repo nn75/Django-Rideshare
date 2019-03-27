@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>Title</title>
+</head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Js统计</title>
+    <style type="text/css">
+        table {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #bf751a;
+        }
+
+        table td, table th {
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #ddd;
+        }
+
+        table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: #e4840f;
+            color: white;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-1.11.0-beta1.js"></script>
+    <script type="text/javascript">
+        function choose(obj) {
+            var ss = document.getElementsByName("ckb_select");
+            for (var i = 0; i < ss.length; i++) {
+                ss[i].checked = false;
+            }
+            obj.checked = true;
+            document.getElementById("id_receive").disabled = "";
+        }
+        function getTableContent() {
+            var Tabobj = $("#tb_tj");
+            var Check = $("table input[type=checkbox]:checked");
+            Check.each(function () {
+                var row = $(this).parent("td").parent("tr");
+                var a1 = row.find("[name='a1']").html();
+                var a2 = row.find("[name='a2']").html();
+                var a3 = row.find("[name='a3']").html();
+                var a4 = row.find("[name='a4']").html();
+                var a5 = row.find("[name='a5']").html();
+                var a6 = row.find("[name='a6']").html();
+                var a8 = row.find("[name='a8']").html();
+                var a9 = row.find("[name='a9']").html();
+                localStorage.s1 = a1;
+                localStorage.s2 = a2;
+                localStorage.s3 = a3;
+                localStorage.s4 = a4;
+                localStorage.s5 = a5;
+                localStorage.s6 = a6;
+                localStorage.s7 = 'Open';
+                localStorage.s8 = a8;
+                localStorage.s9 = a9;
+            })
+            window.location.href = "{% url 'claim_confirm' user.id %}";
+        }
+        function to_profile() {
+            window.location.href = "{% url 'driver_profile' user.id %}";
+        }
+    </script>
+</head>
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+<div class="table_title">Rides Requests</div>
+<div class="nav">
+    <table id="tb_tj" class="table" style="margin-left:0px;">
+    <tr>
+        <th></th>
+        <th>Ride ID</th>
+        <th>Start</th>
+        <th>Destination</th>
+        <th>Arrival Time</th>
+        <th>Passenger Number</th>
+        <th>Vehicle_Level</th>
+        <th>Share or Not</th>
+        <th>Special Request</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order in openlist %}
+        <tr>
+                <td><input type="checkbox" name="ckb_select" onclick=choose(this) value="1" style="width:20px;"></td>
+                <td>
+                    <div name="a8" class="wrap">{{ order.id }}</div>
+                </td>
+                <td>
+                    <div name="a1" class="wrap">{{ order.start }}</div>
+                </td>
+                <td>
+                    <div name="a2" class="wrap">{{ order.destination }}</div>
+                </td>
+                <td>
+                    <div name="a3" class="wrap">{{ order.arrival_time|date:"Y-m-d H:i:s"  }}</div>
+                </td>
+                <td>
+                    <div name="a4" class="wrap">{{ order.passenger_num }}</div>
+                </td>
+                <td>
+                    <div name="a5" class="wrap">{{ order.vehicle_level }}</div>
+                </td>
+                <td>
+                    <div name="a6" class="wrap">{{ order.is_shared }}</div>
+                </td>
+                <td>
+                    <div name="a9" class="wrap">{{ order.special_request }}</div>
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p><input type="button" id="id_return" name="btn" value="Return" onclick="to_profile()"  class="table_return"></p>
+<p><input type="button" id="id_receive" name="btn" disabled="disabled" value="Claim" onclick="getTableContent()"class="table_select"></p>
+</div>
+</body>
+</html>

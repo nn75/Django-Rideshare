@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>页面2</title>
+</head>
+
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+
+<div class="nav">
+    <div class="table_title">Confirm Order</div>
+    <div class="san">
+        <br>
+        <uL>
+            <li align="center"><strong>Start:</strong></li>
+            <li style=" padding-left:10px;"><samp id="start">start</samp></li>
+            <li align="center"><strong>Destination:</strong></li>
+            <li style=" padding-left:10px;"><samp id="destination">destination</samp></li>
+            <li align="center"><strong>Time:</strong></li>
+            <li style=" padding-left:10px;"><samp id="time">time</samp></li>
+            <li align="center"><strong>Passenger Number:</strong></li>
+            <li style=" padding-left:10px;"><samp id="pg_num">passenger number</samp></li>
+            <li align="center"><strong>Vehicle Level:</strong></li>
+            <li style=" padding-left:10px;"><samp id="level">level</samp></li>
+            <li align="center"><strong>Share?</strong></li>
+            <li style=" padding-left:10px;"><samp id="share">share</samp></li>
+            <li align="center"><strong>Special Request:</strong></li>
+            <li style=" padding-left:10px;"><samp id="special_request">share</samp></li>
+        </uL>
+        <input type="button" value="Back" onclick="toReturn()" class="confirm_return">
+        <input type="button" value="Confirm" onclick="return_to_new()" class="confirm">
+        <div class="clearit"></div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+
+    {% if errormsg %}
+    window.alert("{{ errormsg }}");
+    {% endif %}
+    var mystart = localStorage["start"];
+    document.getElementById("start").innerHTML = mystart;
+    var mydestination = localStorage["destination"];
+    document.getElementById("destination").innerHTML = mydestination;
+    var mytime = localStorage["time"];
+    document.getElementById("time").innerHTML = mytime;
+    var mylevel = localStorage["level"];
+    document.getElementById("level").innerHTML = mylevel;
+    var mypg_num = localStorage["pg_num"];
+    document.getElementById("pg_num").innerHTML = mypg_num;
+    var myshare = localStorage["share"];
+    document.getElementById("share").innerHTML = myshare;
+    var myspecial = localStorage["special_service"];
+    document.getElementById("special_request").innerHTML = myspecial;
+    function return_to_new() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "{% url 'ride_confirm' user.id %}");
+        var params = {
+            "start": mystart,
+            "destination": mydestination,
+            "time": mytime,
+            "level": mylevel,
+            "passenger_num": mypg_num,
+            "special_request": myspecial,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+
+        document.body.appendChild(form);
+        form.submit()
+    }
+
+    function toReturn() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

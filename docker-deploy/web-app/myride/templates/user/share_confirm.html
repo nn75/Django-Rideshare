@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>页面2</title>
+</head>
+
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+
+<div class="nav">
+    <div class="table_title">Confirm Order</div>
+    <div class="san">
+        <br>
+        <uL>
+            <li align="center"><strong>Order ID:</strong></li>
+            <li style=" padding-left:10px;"><samp id="ID">None</samp></li>
+            <li align="center"><strong>Start:</strong></li>
+            <li style=" padding-left:10px;"><samp id="start">start</samp></li>
+            <li align="center"><strong>Destination:</strong></li>
+            <li style=" padding-left:10px;"><samp id="destination">destination</samp></li>
+            <li align="center"><strong>Time:</strong></li>
+            <li style=" padding-left:10px;"><samp id="time">time</samp></li>
+            <li align="center"><strong>Passenger Number:</strong></li>
+            <li style=" padding-left:10px;"><samp id="pg_num">passenger number</samp></li>
+            <li align="center"><strong>Vehicle Level:</strong></li>
+            <li style=" padding-left:10px;"><samp id="level">level</samp></li>
+            <li align="center"><strong>Share?</strong></li>
+            <li style=" padding-left:10px;"><samp id="share">True</samp></li>
+            <li align="center"><strong>Status:</strong></li>
+            <li style=" padding-left:10px;"><samp id="status">No</samp></li>
+            <li align="center"><strong>Special Request:</strong></li>
+            <li style=" padding-left:10px;"><samp id="special_request">No</samp></li>
+        </uL>
+        <input type="button" value="Return" onclick="toReturn()" class="confirm_return">
+        <input type="button" value="Confirm" onclick="to_confirm_share()" class="confirm">
+        <div class="clearit"></div>
+    </div>
+</div>
+</body>
+<script language="javascript" type="text/javascript">
+    var whether_new = localStorage["t8"];
+    if (whether_new == 'new') {
+        var myID = false;
+        var mystart = localStorage["t1"];
+        document.getElementById("start").innerHTML = mystart;
+        var mydestination = localStorage["t2"];
+        document.getElementById("destination").innerHTML = mydestination;
+        var mytime = localStorage["t3"];
+        document.getElementById("time").innerHTML = mytime;
+        var mypg_num = localStorage["t4"];
+        document.getElementById("pg_num").innerHTML = mypg_num;
+        var mylevel = localStorage["t5"];
+        document.getElementById("level").innerHTML = mylevel;
+        var myshare = true;
+        document.getElementById("share").innerHTML = myshare;
+        var mystatus = localStorage["t7"];
+        document.getElementById("status").innerHTML = mystatus;
+        var myrequest = localStorage["t9"];
+        document.getElementById("special_request").innerHTML = myrequest;
+    } else {
+
+        var myID = localStorage["s8"];
+        document.getElementById("ID").innerHTML = myID;
+        var mystart = localStorage["t1"];
+        document.getElementById("start").innerHTML = mystart;
+        var mydestination = localStorage["s2"];
+        document.getElementById("destination").innerHTML = mydestination;
+        var mytime = localStorage["s3"];
+        document.getElementById("time").innerHTML = mytime;
+        var mypg_num = localStorage["t4"];
+        document.getElementById("pg_num").innerHTML = mypg_num;
+        var mylevel = localStorage["s5"];
+        document.getElementById("level").innerHTML = mylevel;
+        var myshare = true;
+        document.getElementById("share").innerHTML = myshare;
+        var mystatus = localStorage["s7"];
+        document.getElementById("status").innerHTML = mystatus;
+        var myrequest = localStorage["s9"];
+        document.getElementById("special_request").innerHTML = myrequest;
+    }
+
+
+    function toReturn() {
+        window.history.back();
+    }
+
+    function to_confirm_share() {
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "{% url 'share_confirm' user.id %}");
+        var params = {
+            "start": mystart,
+            "ride_pk": myID,
+            "passenger_num": mypg_num,
+            "destination": mydestination,
+            "time": mytime,
+            "level": mylevel,
+            "special_request": myrequest,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        }
+        for (var key in params) {
+            if (params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+
+                form.appendChild(hiddenField);
+            }
+        }
+        document.body.appendChild(form);
+        form.submit()
+    }
+</script>
+
+
+</html>

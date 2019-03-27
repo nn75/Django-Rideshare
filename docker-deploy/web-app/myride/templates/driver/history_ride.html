@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>Title</title>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<style type="text/css">
+    table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #bf751a;
+    }
+
+    table td, table th {
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    table tr:hover {
+        background-color: #ddd;
+    }
+
+    table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #e4840f;
+        color: white;
+    }
+</style>
+<script type="text/javascript">
+    function return_back() {
+        window.location.href = "{% url 'driver_profile' user.id %}";
+    }
+</script>
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+<div class="table_title">History Rides</div>
+<div class="nav">
+<table id="tb_tj" class="table">
+        <thead>
+        <tr>
+            <th>Ride ID</th>
+            <th>Start</th>
+            <th>Destination</th>
+            <th>Arrival Time</th>
+            <th>Passenger Number</th>
+            <th>Vehicle_Level</th>
+            <th>Share or Not</th>
+            <th>Special Request</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in historylist %}
+            <tr>
+                <td>
+                    <div name="a8" class="wrap">{{ order.ride_pk}}</div>
+                </td>
+                <td>
+                    <div name="a1" class="wrap">{{ order.start }}</div>
+                </td>
+                <td>
+                    <div name="a2" class="wrap">{{ order.destination }}</div>
+                </td>
+                <td>
+                    <div name="a3" class="wrap">{{ order.arrival_time }}</div>
+                </td>
+                <td>
+                    <div name="a4" class="wrap">{{ order.passenger_num }}</div>
+                </td>
+                <td>
+                    <div name="a5" class="wrap">{{ order.vehicle_level }}</div>
+                </td>
+                <td>
+                    <div name="a6" class="wrap">{{ order.is_shared }}</div>
+                </td>
+                <td>
+                    <div name="a7" class="wrap">{{ order.special_request }}</div>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p><input type="button" name="btn" value="Return" onclick="return_back()" class="table_return"></p>
+</div>
+</body>
+</html>

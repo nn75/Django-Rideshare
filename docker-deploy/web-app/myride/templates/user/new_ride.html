@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+    <title>页面1</title>
+</head>
+<script language="javascript" type="text/javascript">
+
+
+    function whether_share() {
+        var share = document.getElementById("id_is_shared").checked;
+        if (share == false) {
+            localStorage.share = 'false';
+            toConfirm();
+        } else {
+            toSharePool();
+        }
+    }
+
+    function toConfirm() {
+        var start = document.getElementById("id_start");
+        var destination = document.getElementById("id_destination");
+        var time = document.getElementById("id_time");
+        var level = document.getElementById("id_level");
+        var pg_num = document.getElementById("id_passenger_num");
+        var special_service = document.getElementById("id_special_service");
+
+        localStorage.start = start.value;
+        localStorage.destination = destination.value;
+        localStorage.time = time.value;
+        localStorage.level = level.value;
+        localStorage.pg_num = pg_num.value;
+        localStorage.special_service = special_service.value;
+
+        window.location.href = "{% url 'ride_confirm' user.id %}";
+    }
+
+    function toSharePool() {
+        document.getElementById("myform").submit();
+    }
+
+    function to_profile() {
+        window.location.href = "{% url 'customer_profile' user.id %}";
+    }
+</SCRIPT>
+
+<body>
+<div class="top">
+    <div class="logo"><img src="../../static/images/logo.gif" width="187" height="47"></div>
+</div>
+
+<div class="nav">
+    <div class="table_title">Create a new ride</div>
+    <div class="san">
+        <br>
+        <uL>
+            <form action="" method="POST" id="myform">
+                {% csrf_token %}
+                <li align="center"><strong>From:</strong></li>
+                <li style=" padding-left:10px;"><input type="text" id="id_start" name="start" placeholder="start"
+                                                       autofocus required/></li>
+                <li align="center"><strong>To: </strong></li>
+                <li style=" padding-left:10px;"><input type="text" id="id_destination" name="destination"
+                                                       placeholder="destination" autofocus required/></li>
+                <li align="center"><strong>Time:</strong></li>
+                <li style=" padding-left:10px;"><input type="datetime-local" id="id_time" value="2019-01-29T12:59:00" name="time" placeholder="time" required/></li>
+                <li align="center"><strong>Vehicle Level:</strong></li>
+                <li style=" padding-left:10px;"><select id="id_level" name="level" placeholder="time" required/>
+                    <option value="S" selected>S(1-3 people)</option>
+                    <option value="M">M(1-5 people)</option>
+                    <option value="L">L(1-7 people)</option>
+                    </select>
+                </li>
+                <li align="center"><strong>Your passenger number:</strong></li>
+                <li style=" padding-left:10px;"><input type="text" id="id_passenger_num" name="passenger_num" placeholder="passenger num" required/></li>
+                 <li align="center"><strong>Your special service:</strong></li>
+                <li style=" padding-left:10px;"><input type="text" id="id_special_service" name="special_request" placeholder="special request" required/></li>
+                <li align="center"><strong>Share ride with others?</strong></li>
+                <li style=" padding-left:10px;"><input type="checkbox" id="id_is_shared" name="is_shared"/></li>
+            </form>
+        </uL>
+        <input type="button" name="btn" value="Return" onclick="to_profile()" class="confirm_return">
+        <input type="button" value="New" onclick="whether_share()" class="confirm">
+        <div class="clearit"></div>
+    </div>
+</div>
+
+</body>
+</html>

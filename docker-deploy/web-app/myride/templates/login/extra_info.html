@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+{% load static %}
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+<title>login</title>
+</head>
+
+<body>
+<div class="top">
+<div class="logo"><img src="{% static "images/logo.gif" %}" width="187" height="47"></div>
+</div>
+
+<div class="nav">
+<div class="zuo"><h2>Please enter driver informationChange Password</h2>
+    <form action="{% url 'extra_info' user.id %}" method="post">
+
+        {% csrf_token %}
+{#        <p>#}
+{#            <label for="id_username">Username: </label>#}
+{#            <input type="text" id="id_username" name="username" placeholder="username" autofocus required/>#}
+{#        </p>#}
+{##}
+{#        <p>#}
+{#            <label for="id_password">Password: </label>#}
+{#            <input type="password" id="id_password" placeholder="Password" name="password" required>#}
+{#        </p>#}
+
+{#        <p>#}
+{#            <label for="id_email">Email：</label>#}
+{#            <input type="text" id="id_email" name="email" placeholder="Email" required/>#}
+{#        </p>#}
+
+            <p>
+                <label for="id_license">License Plate Number:</label>
+                <input type="text" id="id_license" name="license" placeholder="License Plate Number" />
+            </p>
+
+
+            <p>
+                <label for="id_vehicle">Vehicle Level：</label>
+                <select type="text" id="id_vehicle" name="vehicle" placeholder="Vehicle Level" />
+                    <option value="S" selected>S(1-3 people)</option>
+                    <option value="M">M(1-5 people)</option>
+                    <option value="L">L(1-7 people)</option>
+                </select>
+            </p>
+            <p>
+                <label for="id_special">Special Sevices：</label>
+                <input type="text" id="id_special" name="special" placeholder="Special Sevices"/>
+            </p>
+        <input type="submit" value="确定">
+    </form>
+</div>
+
+</div>
+
+
+<div class="you"><img src="{% static 'images/tu.jpg' %}" width="600" height="400"></div>
+</div><div class="clearit"></div>
+
+
+<div class="foot"></div>
+</body>
+</html>
+
+</html>
+

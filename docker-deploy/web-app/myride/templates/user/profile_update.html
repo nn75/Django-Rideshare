@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+{% load static %}
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+<title>login</title>
+</head>
+
+<body>
+<div class="top">
+<div class="logo"><img src="{% static "images/logo.gif" %}" width="187" height="47"></div>
+</div>
+
+<div class="nav">
+<div class="zuo"><h2>Account Info</h2>
+{% block content %}
+    <ul>
+        <li>Username: {{ user.username }} </li>
+        <li>Email: {{ user.email }} </li>
+
+    </ul>
+    <h2>Update My Profile</h2>
+
+    <div class="form-wrapper">
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="fieldWrapper">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                    {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="button-wrapper submit">
+                <input type="submit" value="Update"/>
+            </div>
+        </form>
+    </div>
+
+    <a href="{% url 'logout' %}">Logout</a> |
+    <a href="{% url 'pwd_change' user.id %}">Password change</a>
+
+{% endblock %}
+</div>
+
+
+<div class="you"><img src="{% static 'images/tu.jpg' %}" width="600" height="400"></div>
+</div><div class="clearit"></div>
+
+
+<div class="foot"></div>
+</body>
+</html>

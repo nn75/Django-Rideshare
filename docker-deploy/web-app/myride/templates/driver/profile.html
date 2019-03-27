@@ -1,0 +1,65 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}">
+<body>
+<div class="top">
+    <div class="logo"><img src="{% static "images/logo.gif" %}" width="187" height="47"></div>
+</div>
+
+<div class="nav">
+    <div class="zz">
+        <div class="nan"><img src="{% static "images/tu1.jpg" %}" width="150" height="137"><br/>
+            {% block content %}
+
+                <h2>My Profile</h2>
+                <ul>
+                    <li>Username: {{ user.username }} </li>
+                    <li>Email: {{ user.email }} </li>
+                    <li>Name: {{ user.customer.name }} </li>
+                    <li>Telephone: {{ user.customer.phone }} </li>
+                    <li>License: {{ user.driver.license }} </li>
+                    <li>Vehicle_level: {{ user.driver.vehicle_level }} </li>
+                    <li>Special_service: {{ user.driver.special_service }} </li>
+
+                </ul>
+        </div>
+     </div>
+                <div class="yy">
+                    <p><input type="button" value="Customer Version" onclick="to_customer_page()" class="dao"></p>
+                    <p><input type="button" value="Claim Ride" onclick="to_claim_ride() " class="dao"></p>
+                    <p><input type="button" value="Finish Rides" onclick="to_finish()" class="dao"></p>
+                    <p><input type="button" value="History Rides" onclick="to_history()" class="dao"></p>
+                </div>
+                </div>
+                <div class="clearit"></div>
+
+                {% if user.is_authenticated %}
+                    <div style=" margin-left:650px;">
+                        <a href="{% url 'driver_update' user.id %}">Edit| </a>
+                        <a href="{% url 'pwd_change' user.id %}">Change Password | </a>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </div>
+                {% endif %}
+
+                </body>
+                <script type="text/javascript">
+                    function to_claim_ride() {
+                        window.location.href = "{% url 'claim_ride' user.id %}";
+                    }
+
+                    function to_finish() {
+                        window.location.href = "{% url 'finish_ride' user.id %}";
+                    }
+
+                    function to_history() {
+                        window.location.href = "{% url 'driver_history_ride' user.id %}";
+                    }
+
+                    function to_customer_page() {
+                        window.location.href = "{% url 'customer_profile' user.id %}";
+                    }
+                </script>
+
+
+
+
+            {% endblock %}
